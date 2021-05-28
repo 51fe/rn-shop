@@ -3,10 +3,10 @@
 > [A shopping project](http://riafan.com/rnshop) with MongoDB + Express + React (HOOK) + Node.js + Redux + React Navigation. If you like the project, please star me, thanks!
 
 ## Snapshot:
-![效果截图](https://github.com/51fe/rn-shop/blob/master/release/rn-shop.jpg?raw=true)
+![效果截图](https://github.com/51fe/rn-shop/blob/master/assets/img/rn-shop.jpg?raw=true)
 
 ## Qr code:
-![扫码体验](https://github.com/51fe/rn-shop/blob/master/release/qr-code.png?raw=true)
+![扫码体验](https://github.com/51fe/rn-shop/blob/master/assets/img/qr-code.png?raw=true)
 
 ## Build Setup
 
