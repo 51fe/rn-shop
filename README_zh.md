@@ -3,13 +3,10 @@
 > MongoDB + Express + React(HOOK) + Node.js + Redux + React Navigation [电商实战项目](http://riafan.com/rn-shop) 。如果您喜欢本项目, 欢迎点赞，谢谢！
 
 ## 效果截图:
-![效果截图](release/rn-shop.jpg)
+![效果截图](https://github.com/51fe/rn-shop/blob/master/release/rn-shop.jpg?raw=true)
 
 ## 扫码体验:
-![扫码体验](release/qr-code.png)
-
-## 下载后端代码并运行[服务](https://github.com/51fe/shop-api.git)
-
+![扫码体验](https://github.com/51fe/rn-shop/blob/master/release/qr-code.png?raw=true)
 
 ## 运行
 

@@ -20,11 +20,7 @@ import { getCartItemsCount } from './utils'
 
 const App = () => {
   const items = store.getState().cart.items;
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    const value = getCartItemsCount(items);
-    setCount(value);
-  }, [items]);
+  const [count, setCount] = useState(6);
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
