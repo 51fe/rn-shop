@@ -1,20 +1,29 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import BaseImage from './BaseImage';
 import { getAddedQuantity } from '../utils';
+import { useNavigation } from '@react-navigation/core';
 
 const ProductItem = ({ product, addCartItem }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <BaseImage uri={product.image} />
-      <View style={styles.description}>
-        <View style={styles.info}>
-          <Text style={styles.manufacturer}>{product.manufacturer.name}</Text>
-          <Text>{product.name}</Text>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('ProductDetail', { id: product._id })
+        }>
+        <BaseImage uri={product.image} />
+        <View style={styles.description}>
+          <View style={styles.info}>
+            <Text style={styles.manufacturer}>{product.manufacturer.name}</Text>
+            <Text numberOfLines={1} ellipsizeMode="tail">
+              {product.name}
+            </Text>
+          </View>
+          <Text style={styles.price}>¥{product.price}</Text>
         </View>
-        <Text style={styles.price}>¥{product.price}</Text>
-      </View>
+      </TouchableOpacity>
       <Button
         title="加入购物车"
         color="#df3033"
@@ -32,8 +41,8 @@ ProductItem.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 16,
   },
 
   description: {

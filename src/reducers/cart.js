@@ -1,5 +1,5 @@
 ﻿import * as types from '../actions/actionTypes';
-import { getLocalData, saveLocalData } from '../utils';
+import localStorage from '../utils/localStorage';
 
 const initialState = {
   items: [],
@@ -11,47 +11,51 @@ const initialState = {
  * @param items
  * @param payload
  * @param count
- * @param many
  */
-const addToCart = (items, payload, count) => {
+const addToCart = (state, data, many = false) => {
+  const items = [...state.items];
   const found = items.find(item => {
-    return item._id === payload._id;
+    return item._id === data._id;
   });
+  const count = many ? state.count : 1;
   // add
   if (!found) {
-    items.unshift({ ...payload, quantity: count });
+    items.unshift({ ...data, quantity: count });
   } else {
     // update
     found.quantity += count;
   }
-  saveLocalData(items);
+  localStorage.setItem(items);
   return items;
 };
 
-export default function cart(state = initialState, action) {
+const cart = (state = initialState, action) => {
   let items = [];
   switch (action.type) {
-    case types.GET_ALL_CART_ITEMS_SUCCESS:
+    case types.LOAD_CART_ITEMS:
+    case types.SAVE_CART_ITEMS:
+      items = action.items;
       return {
         ...state,
-        items: action.data,
+        items,
       };
+
     case types.ADD_CART_ITEMS:
       return {
         ...state,
-        items: addToCart(action.items, action.item, state.count),
+        items: addToCart(state, action.item, true),
       };
 
     case types.ADD_CART_ITEM:
       return {
         ...state,
-        items: addToCart(action.items, action.item, 1),
+        items: addToCart(state, action.item),
       };
 
     case types.REMOVE_CART_ITEM:
       // Called when removing one item from cart
-      items = action.items.filter(item => item._id !== action.id);
-      saveLocalData(items);
+      items = state.items.filter(item => item._id !== action.id);
+      localStorage.setItem(items);
       return {
         ...state,
         items,
@@ -64,7 +68,7 @@ export default function cart(state = initialState, action) {
      */
     case types.UPDATE_CART_ITEM:
       const payload = action.item;
-      items = action.items.map(item =>
+      items = state.items.map(item =>
         item._id === payload.id
           ? {
               ...item,
@@ -72,7 +76,7 @@ export default function cart(state = initialState, action) {
             }
           : item,
       );
-      saveLocalData(items);
+      localStorage.setItem(items);
       return {
         ...state,
         items,
@@ -93,4 +97,8 @@ export default function cart(state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default cart;
+
+export const getAllItems = state => state.cart.items;

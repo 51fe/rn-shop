@@ -5,35 +5,38 @@ import { View, TextInput, StyleSheet, TouchableHighlight } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { updateCartItem, willUpdateItem } from '../actions/cart';
 
-const CartControl = ({ product, needConfirmed, added }) => {
-  const [count, setCount] = useState(product.quantity || 1);
+const CartControl = ({ product, needConfirmed, added, quantity }) => {
+  const initValue = needConfirmed ? 1 : product.quantity;
+  const [count, setCount] = useState(initValue);
+
   const dispatch = useDispatch();
-  const increment = value => {
+  const increment = () => {
     let max = count;
     if (needConfirmed) {
       max = count + added;
     }
     if (max < product.inventory) {
-      setCount(++value);
-      watchCount(value);
+      setCount(count + 1);
+      watchCount(count + 1);
     }
   };
 
-  const decrement = value => {
+  const decrement = () => {
     if (count > 1) {
-      setCount(--value);
-      watchCount(value);
+      setCount(count - 1);
+      watchCount(count - 1);
     }
   };
 
-  const handleChange = e => {
-    let val = e.target.value;
+  const handleChange = value => {
+    console.log(value);
+    let val = Number(value);
     // Should be a positive integer
-    if (/^[1-9]\d*$/.test(val) && val <= product.inventory) {
-      setCount(Number(val));
+    if (/^[1-9]\d*$/.test(value) && val <= product.inventory) {
+      setCount(val);
       watchCount(val);
     } else {
-      e.target.value = count;
+      setCount(initValue);
     }
   };
 
@@ -52,7 +55,7 @@ const CartControl = ({ product, needConfirmed, added }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableHighlight onPress={() => decrement(count)}>
+      <TouchableHighlight onPress={decrement}>
         <MaterialCommunityIcons name="minus-circle" size={24} />
       </TouchableHighlight>
       <TextInput
@@ -60,9 +63,9 @@ const CartControl = ({ product, needConfirmed, added }) => {
         keyboardType="decimal-pad"
         selectTextOnFocus={true}
         style={styles.input}
-        onChangeText={e => handleChange(e)}
+        onChangeText={handleChange}
       />
-      <TouchableHighlight onPress={() => increment(count)}>
+      <TouchableHighlight onPress={increment}>
         <MaterialCommunityIcons name="plus-circle" size={24} />
       </TouchableHighlight>
     </View>

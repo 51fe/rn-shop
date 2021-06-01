@@ -1,49 +1,40 @@
 import * as types from './actionTypes';
-import { getLocalData } from '../utils';
+import localStorage from '../utils/localStorage';
 
-export const getAllCartItems = () => async dispatch => {
-  const data = await getLocalData();
+export const loadChartItems = async dispatch => {
+  const items = await localStorage.getItem();
   await dispatch({
-    type: types.GET_ALL_CART_ITEMS_SUCCESS,
-    data,
+    type: types.LOAD_CART_ITEMS,
+    items,
   });
 };
 
-export const addCartItems = item => async dispatch => {
-  const data = await getLocalData();
+export const saveChartItems = items => async dispatch => {
   await dispatch({
-    type: types.ADD_CART_ITEMS,
-    items: data,
-    item,
+    type: types.SAVE_CART_ITEMS,
+    items,
   });
 };
 
-export const addCartItem = item => async dispatch => {
-  const data = await getLocalData();
-  await dispatch({
-    type: types.ADD_CART_ITEM,
-    items: data,
-    item,
-  });
-};
+export const addCartItems = item => ({
+  type: types.ADD_CART_ITEMS,
+  item,
+});
 
-export const removeCartItem = id => async dispatch => {
-  const data = await getLocalData();
-  await dispatch({
-    type: types.REMOVE_CART_ITEM,
-    items: data,
-    id,
-  });
-};
+export const addCartItem = item => ({
+  type: types.ADD_CART_ITEM,
+  item,
+});
 
-export const updateCartItem = item => async dispatch => {
-  const data = await getLocalData();
-  await dispatch({
-    type: types.UPDATE_CART_ITEM,
-    items: data,
-    item,
-  });
-};
+export const removeCartItem = id => ({
+  type: types.REMOVE_CART_ITEM,
+  id,
+});
+
+export const updateCartItem = item => ({
+  type: types.UPDATE_CART_ITEM,
+  item,
+});
 
 export const willUpdateItem = count => ({
   type: types.WILL_UPDATE_CART_ITEM,

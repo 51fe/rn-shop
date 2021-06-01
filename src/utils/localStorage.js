@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default {
-  async setItem(key = 'RN_CART_ITEMS', value) {
+  async setItem(value, key = 'RN_CART_ITEMS') {
     try {
       return await AsyncStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
