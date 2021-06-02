@@ -10,20 +10,20 @@ const initialState = {
  * Add item(s) to cart
  * @param items
  * @param payload
- * @param count
+ * @param many
  */
-const addToCart = (state, data, many = false) => {
+const addToCart = (state, payload, many = false) => {
   let items = [];
   if (Array.isArray(state.items)) {
-    items = [];
+    items = [...state.items];
   }
   const found = items.find(item => {
-    return item._id === data._id;
+    return item._id === payload._id;
   });
   const count = many ? state.count : 1;
   // add
   if (!found) {
-    items.unshift({ ...data, quantity: count });
+    items.unshift({ ...payload, quantity: count });
   } else {
     // update
     found.quantity += count;
