@@ -29,7 +29,6 @@ const CartControl = ({ product, needConfirmed, added, quantity }) => {
   };
 
   const handleChange = value => {
-    console.log(value);
     let val = Number(value);
     // Should be a positive integer
     if (/^[1-9]\d*$/.test(value) && val <= product.inventory) {

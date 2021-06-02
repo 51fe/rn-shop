@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getProductById } from '../actions/product';
-import { addCartItems } from '../actions/cart';
+import { addCartItems, willUpdateItem } from '../actions/cart';
 import CartControl from '../components/CartControl';
 import BaseImage from '../components/BaseImage';
 import Loader from '../components/Loader';
@@ -27,7 +27,11 @@ const Detail = ({ route, navigation }) => {
   }, [id, dispatch]);
 
   const isFocused = useIsFocused();
-
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(willUpdateItem(1));
+    }
+  }, [isFocused, dispatch]);
   const loading = useSelector(state => state.status.code === -1);
   const addCartItem = () => {
     dispatch(addCartItems(product));

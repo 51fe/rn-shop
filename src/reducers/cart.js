@@ -13,7 +13,10 @@ const initialState = {
  * @param count
  */
 const addToCart = (state, data, many = false) => {
-  const items = [...state.items];
+  let items = [];
+  if (Array.isArray(state.items)) {
+    items = [];
+  }
   const found = items.find(item => {
     return item._id === data._id;
   });
@@ -101,4 +104,4 @@ const cart = (state = initialState, action) => {
 
 export default cart;
 
-export const getAllItems = state => state.cart.items;
+export const getAllItems = state => state.cart.items || [];

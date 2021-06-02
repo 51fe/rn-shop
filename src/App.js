@@ -14,11 +14,7 @@ const App = () => {
       <NavigationContainer>
         <Tab.Navigator
           tabBarOptions={{
-            activeTintColor: '#df3033',
-            inactiveTintColor: '#333',
-            activeBackgroundColor: '#333',
-            inactiveBackgroundColor: '#fff',
-            labelStyle: { fontSize: 16 },
+            labelPosition: 'beside-icon',
           }}>
           <Tab.Screen
             name="Home"

@@ -13,7 +13,7 @@ import CartItem from '../components/CartItem';
 import { loadChartItems, removeCartItem } from '../actions/cart';
 import { getAllItems } from '../reducers/cart';
 import { getCartItemsCount, getCartPriceSum } from '../utils';
-import axios from 'axios';
+import axios from '../actions/axois';
 
 const Cart = ({ navigation }) => {
   const insets = useSafeAreaInsets();
@@ -24,7 +24,6 @@ const Cart = ({ navigation }) => {
 
   const items = useSelector(getAllItems);
   const count = getCartItemsCount(items);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       tabBarBadge: count,
@@ -33,16 +32,22 @@ const Cart = ({ navigation }) => {
 
   const goPay = () => {
     items.forEach(async item => {
-      const id = item.id;
-      await axios.put(`products/${id}`, {
+      await axios.put(`products/${item._id}`, {
         ...item,
         inventory: item.inventory - item.quantity,
       });
-      dispatch(removeCartItem(id));
     });
-    Alert.alert('消息', '功能有待添加', [{ text: '确认', onPress: () => {} }]);
+    Alert.alert('消息', '功能有待添加', [
+      {
+        text: '确认',
+        onPress: () => {
+          items.forEach(async item => {
+            dispatch(removeCartItem(item._id));
+          });
+        },
+      },
+    ]);
   };
-
   return (
     <View
       style={[
@@ -90,11 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
-    height: 40,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    paddingTop: 8,
-    paddingBottom: 8,
+    padding: 16,
     fontSize: 18,
   },
   cart: {
