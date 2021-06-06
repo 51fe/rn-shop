@@ -1,5 +1,4 @@
 ﻿import * as types from '../actions/actionTypes';
-import localStorage from '../utils/localStorage';
 
 const initialState = {
   items: [],
@@ -28,21 +27,12 @@ const addToCart = (state, payload, many = false) => {
     // update
     found.quantity += count;
   }
-  localStorage.setItem(items);
   return items;
 };
 
 const cart = (state = initialState, action) => {
   let items = [];
   switch (action.type) {
-    case types.LOAD_CART_ITEMS:
-    case types.SAVE_CART_ITEMS:
-      items = action.items;
-      return {
-        ...state,
-        items,
-      };
-
     case types.ADD_CART_ITEMS:
       return {
         ...state,
@@ -58,7 +48,6 @@ const cart = (state = initialState, action) => {
     case types.REMOVE_CART_ITEM:
       // Called when removing one item from cart
       items = state.items.filter(item => item._id !== action.id);
-      localStorage.setItem(items);
       return {
         ...state,
         items,
@@ -79,7 +68,6 @@ const cart = (state = initialState, action) => {
             }
           : item,
       );
-      localStorage.setItem(items);
       return {
         ...state,
         items,
@@ -104,4 +92,4 @@ const cart = (state = initialState, action) => {
 
 export default cart;
 
-export const getAllItems = state => state.cart.items || [];
+export const getAllItems = state => state.cart.items;

@@ -1,10 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { persistStore } from 'redux-persist';
 import reducers from './reducers/index';
 
-const middleware = [thunk];
-
-// 给增强后的store传入reducer
-const store = createStore(reducers, applyMiddleware(...middleware));
-
-export default store;
+export const store = createStore(reducers, applyMiddleware(thunk));
+export const persisted = persistStore(store);

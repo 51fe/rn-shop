@@ -1,5 +1,3 @@
-import localStorage from './localStorage';
-
 /**
  * get Cart Items Count
  * @param items
@@ -26,12 +24,12 @@ export const getCartPriceSum = items =>
 
 /**
  * get item quantity put in the car
+ * @param items
  * @param id
  * @returns {Number}
  */
-export const getAddedQuantity = async id => {
+export const getAddedQuantity = async (items, id) => {
   try {
-    const items = await localStorage.getItem();
     const found = items.find(item => item._id === id);
     if (found) {
       return Number(found.quantity);

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   View,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CartItem from '../components/CartItem';
-import { loadChartItems, removeCartItem } from '../actions/cart';
+import { removeCartItem } from '../actions/cart';
 import { getAllItems } from '../reducers/cart';
 import { getCartItemsCount, getCartPriceSum } from '../utils';
 import axios from '../actions/axois';
@@ -18,10 +18,6 @@ import axios from '../actions/axois';
 const Cart = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(loadChartItems);
-  }, [dispatch]);
-
   const items = useSelector(getAllItems);
   const count = getCartItemsCount(items);
   useLayoutEffect(() => {
@@ -97,6 +93,7 @@ const styles = StyleSheet.create({
   title: {
     padding: 16,
     fontSize: 18,
+    fontWeight: '500',
   },
   cart: {
     flex: 1,

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { View, TextInput, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { updateCartItem, willUpdateItem } from '../actions/cart';
 
-const CartControl = ({ product, needConfirmed, added, quantity }) => {
+const CartControl = ({ product, needConfirmed, added }) => {
   const initValue = needConfirmed ? 1 : product.quantity;
   const [count, setCount] = useState(initValue);
 
@@ -54,19 +54,17 @@ const CartControl = ({ product, needConfirmed, added, quantity }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableHighlight onPress={decrement}>
+      <TouchableOpacity onPress={decrement}>
         <MaterialCommunityIcons name="minus-circle" size={24} />
-      </TouchableHighlight>
+      </TouchableOpacity>
       <TextInput
         value={String(count)}
-        keyboardType="decimal-pad"
-        selectTextOnFocus={true}
         style={styles.input}
         onChangeText={handleChange}
       />
-      <TouchableHighlight onPress={increment}>
+      <TouchableOpacity onPress={increment}>
         <MaterialCommunityIcons name="plus-circle" size={24} />
-      </TouchableHighlight>
+      </TouchableOpacity>
     </View>
   );
 };

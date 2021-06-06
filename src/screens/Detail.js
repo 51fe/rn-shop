@@ -8,7 +8,6 @@ import CartControl from '../components/CartControl';
 import BaseImage from '../components/BaseImage';
 import Loader from '../components/Loader';
 import { getAllItems } from '../reducers/cart';
-import { useIsFocused } from '@react-navigation/core';
 
 const Detail = ({ route, navigation }) => {
   const { id } = route.params;
@@ -24,14 +23,9 @@ const Detail = ({ route, navigation }) => {
   const disabled = added >= product.inventory;
   useEffect(() => {
     dispatch(getProductById(id));
+    dispatch(willUpdateItem(1));
   }, [id, dispatch]);
 
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    if (isFocused) {
-      dispatch(willUpdateItem(1));
-    }
-  }, [isFocused, dispatch]);
   const loading = useSelector(state => state.status.code === -1);
   const addCartItem = () => {
     dispatch(addCartItems(product));
@@ -39,61 +33,59 @@ const Detail = ({ route, navigation }) => {
   };
 
   return (
-    isFocused && (
-      <View
-        style={{
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
-        }}>
-        {loading ? (
-          <Loader />
-        ) : (
-          <ScrollView style={styles.container}>
-            <>
-              <View style={styles.detail}>
-                <BaseImage uri={product.image} size="medium" />
-                <View style={styles.info}>
-                  <Text style={styles.manufacturer}>
-                    {product.manufacturer && product.manufacturer.name}
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    style={styles.brand}>
-                    {product.name}
-                  </Text>
-                  <Text>
-                    {disabled ? '缺货' : product.inventory - added + '件可售'}
-                  </Text>
-                </View>
+    <View
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+      }}>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ScrollView style={styles.container}>
+          <>
+            <View style={styles.detail}>
+              <BaseImage uri={product.image} size="medium" />
+              <View style={styles.info}>
+                <Text style={styles.manufacturer}>
+                  {product.manufacturer && product.manufacturer.name}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={styles.brand}>
+                  {product.name}
+                </Text>
+                <Text>
+                  {disabled ? '缺货' : product.inventory - added + '件可售'}
+                </Text>
               </View>
-              <Text
-                numberOfLines={5}
-                ellipsizeMode="tail"
-                style={styles.description}>
-                {product.description}
-              </Text>
-              <View style={styles.priceContainer}>
-                <Text style={styles.price}>¥{product.price}</Text>
-                <CartControl
-                  product={product}
-                  added={added}
-                  needConfirmed={true}
-                />
-              </View>
-              <View style={styles.button}>
-                <Button
-                  color="#df3033"
-                  disabled={disabled}
-                  title="加入购物车"
-                  onPress={() => addCartItem()}
-                />
-              </View>
-            </>
-          </ScrollView>
-        )}
-      </View>
-    )
+            </View>
+            <Text
+              numberOfLines={5}
+              ellipsizeMode="tail"
+              style={styles.description}>
+              {product.description}
+            </Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.price}>¥{product.price}</Text>
+              <CartControl
+                product={product}
+                added={added}
+                needConfirmed={true}
+              />
+            </View>
+            <View style={styles.button}>
+              <Button
+                color="#df3033"
+                disabled={disabled}
+                title="加入购物车"
+                onPress={() => addCartItem()}
+              />
+            </View>
+          </>
+        </ScrollView>
+      )}
+    </View>
   );
 };
 

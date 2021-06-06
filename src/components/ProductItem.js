@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import BaseImage from './BaseImage';
-import { getAddedQuantity } from '../utils';
 import { useNavigation } from '@react-navigation/core';
+import { getAddedQuantity } from '../utils';
+import { getAllItems } from '../reducers/cart';
+import BaseImage from './BaseImage';
 
 const ProductItem = ({ product, addCartItem }) => {
   const navigation = useNavigation();
+  const items = useSelector(getAllItems);
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -27,7 +30,7 @@ const ProductItem = ({ product, addCartItem }) => {
       <Button
         title="加入购物车"
         color="#df3033"
-        disabled={getAddedQuantity(product._id) >= product.inventory}
+        disabled={getAddedQuantity(items, product._id) >= product.inventory}
         onPress={addCartItem}
       />
     </View>
