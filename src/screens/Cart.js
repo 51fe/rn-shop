@@ -91,9 +91,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
-    padding: 16,
-    fontSize: 18,
-    fontWeight: '500',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontFamily: 'sans-serif-medium',
+    fontSize: 20,
+    color: '#1c1c1e',
   },
   cart: {
     flex: 1,

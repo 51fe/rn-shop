@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import BaseImage from '../components/BaseImage';
 import CartControl from '../components/CartControl';
@@ -12,12 +12,12 @@ const CartItem = ({ product, removeCartItem }) => {
   return (
     isFocused && (
       <View style={styles.container}>
-        <TouchableHighlight
+        <TouchableOpacity
           onPress={() =>
             navigation.navigate('ProductDetail', { id: product._id })
           }>
           <BaseImage uri={product.image} size="mini" />
-        </TouchableHighlight>
+        </TouchableOpacity>
         <View style={styles.info}>
           <Text>{product.name}</Text>
           <Text>¥{product.price}</Text>
@@ -26,9 +26,9 @@ const CartItem = ({ product, removeCartItem }) => {
             <Text style={styles.price}>
               ¥{product.price * product.quantity}
             </Text>
-            <TouchableHighlight onPress={removeCartItem}>
+            <TouchableOpacity onPress={removeCartItem}>
               <MaterialCommunityIcons name="trash-can" size={24} />
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
