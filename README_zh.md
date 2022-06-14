@@ -6,7 +6,7 @@
 ![效果截图](https://www.riafan.com/github/rn-shop/snapshot.jpg)
 
 ## 扫码体验:
-![扫码体验](https://www.riafan.com/github/rn-shop/qr-code.pnge)
+![扫码体验](https://www.riafan.com/github/rn-shop/qr-code.png)
 
 ## 运行
 
