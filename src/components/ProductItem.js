@@ -1,24 +1,36 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import BaseImage from './BaseImage';
+import { useNavigation } from '@react-navigation/core';
 import { getAddedQuantity } from '../utils';
+import { getAllItems } from '../reducers/cart';
+import BaseImage from './BaseImage';
 
 const ProductItem = ({ product, addCartItem }) => {
+  const navigation = useNavigation();
+  const items = useSelector(getAllItems);
   return (
     <View style={styles.container}>
-      <BaseImage uri={product.image} />
-      <View style={styles.description}>
-        <View style={styles.info}>
-          <Text style={styles.manufacturer}>{product.manufacturer.name}</Text>
-          <Text>{product.name}</Text>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('ProductDetail', { id: product._id })
+        }>
+        <BaseImage uri={product.image} />
+        <View style={styles.description}>
+          <View style={styles.info}>
+            <Text style={styles.manufacturer}>{product.manufacturer.name}</Text>
+            <Text numberOfLines={1} ellipsizeMode="tail">
+              {product.name}
+            </Text>
+          </View>
+          <Text style={styles.price}>¥{product.price}</Text>
         </View>
-        <Text style={styles.price}>¥{product.price}</Text>
-      </View>
+      </TouchableOpacity>
       <Button
         title="加入购物车"
         color="#df3033"
-        disabled={getAddedQuantity(product._id) >= product.inventory}
+        disabled={getAddedQuantity(items, product._id) >= product.inventory}
         onPress={addCartItem}
       />
     </View>
@@ -32,8 +44,8 @@ ProductItem.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 16,
   },
 
   description: {

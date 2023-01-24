@@ -1,6 +1,6 @@
 import * as types from '../actions/actionTypes';
 
-export default (state = {}, action) => {
+export default (state = { quantity: 1 }, action) => {
   switch (action.type) {
     case types.GET_PRODUCT_BY_ID_SUCCESS:
       if (action.data) {

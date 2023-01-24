@@ -1,40 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  SafeAreaView,
-  ActivityIndicator,
-  ScrollView,
-} from 'react-native';
+import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getProductById } from '../actions/product';
-import { addCartItems } from '../actions/cart';
-import { getAddedQuantity } from '../utils';
+import { addCartItems, willUpdateItem } from '../actions/cart';
 import CartControl from '../components/CartControl';
 import BaseImage from '../components/BaseImage';
+import Loader from '../components/Loader';
+import { getAllItems } from '../reducers/cart';
 
 const Detail = ({ route, navigation }) => {
   const { id } = route.params;
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
-  const loading = useSelector(state => state.status.code === -1);
   const product = useSelector(state => state.product);
-  const [added, setAdded] = useState(0);
+  const items = useSelector(getAllItems);
+  let added = 0;
+  const found = items.find(item => item._id === product._id);
+  if (found) {
+    added = found.quantity;
+  }
   const disabled = added >= product.inventory;
-  const getAdded = async () => {
-    const num = await getAddedQuantity(product._id);
-    setAdded(num);
-  };
   useEffect(() => {
     dispatch(getProductById(id));
+    dispatch(willUpdateItem(1));
   }, [id, dispatch]);
-  useEffect(() => {
-    getAdded();
-  }, [dispatch]);
 
+  const loading = useSelector(state => state.status.code === -1);
   const addCartItem = () => {
     dispatch(addCartItems(product));
     navigation.navigate('Cart');
@@ -46,10 +38,10 @@ const Detail = ({ route, navigation }) => {
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
       }}>
-      <ScrollView style={styles.container}>
-        {loading ? (
-          <ActivityIndicator />
-        ) : (
+      {loading ? (
+        <Loader />
+      ) : (
+        <ScrollView style={styles.container}>
           <>
             <View style={styles.detail}>
               <BaseImage uri={product.image} size="medium" />
@@ -57,13 +49,23 @@ const Detail = ({ route, navigation }) => {
                 <Text style={styles.manufacturer}>
                   {product.manufacturer && product.manufacturer.name}
                 </Text>
-                <Text>{product.name}</Text>
+                <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={styles.brand}>
+                  {product.name}
+                </Text>
                 <Text>
                   {disabled ? '缺货' : product.inventory - added + '件可售'}
                 </Text>
               </View>
             </View>
-            <Text style={styles.description}>{product.description}</Text>
+            <Text
+              numberOfLines={5}
+              ellipsizeMode="tail"
+              style={styles.description}>
+              {product.description}
+            </Text>
             <View style={styles.priceContainer}>
               <Text style={styles.price}>¥{product.price}</Text>
               <CartControl
@@ -81,8 +83,8 @@ const Detail = ({ route, navigation }) => {
               />
             </View>
           </>
-        )}
-      </ScrollView>
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -107,8 +109,12 @@ const styles = StyleSheet.create({
   },
 
   manufacturer: {
-    fontSize: 12,
+    fontSize: 18,
     color: 'grey',
+  },
+
+  brand: {
+    fontSize: 14,
   },
 
   description: {

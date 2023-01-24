@@ -1,14 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { createLogger } from 'redux-logger';
+import { persistStore } from 'redux-persist';
 import reducers from './reducers/index';
 
-const middleware = [thunk];
-if (process.env.NODE_ENV !== 'production') {
-  // middleware.push(createLogger());
-}
-
-// 给增强后的store传入reducer
-const store = createStore(reducers, applyMiddleware(...middleware));
-
-export default store;
+export const store = createStore(reducers, applyMiddleware(thunk));
+export const persisted = persistStore(store);

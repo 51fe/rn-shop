@@ -1,20 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  SafeAreaView,
-  ActivityIndicator,
-  TouchableHighlight,
-} from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ProductItem from './ProductItem';
 import { getAllProducts } from '../actions/products';
 import { addCartItem } from '../actions/cart';
+import Loader from './Loader';
 
-const ProductList = ({ navigation }) => {
+const ProductList = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllProducts());
@@ -25,34 +19,29 @@ const ProductList = ({ navigation }) => {
   const loading = useSelector(state => state.status.code === -1);
   const products = useSelector(state => state.products);
   return (
-    <SafeAreaView
+    <View
       style={{
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
       }}>
       <View style={styles.container}>
         {loading ? (
-          <ActivityIndicator />
+          <Loader />
         ) : (
           <FlatList
             data={products}
             numColumns={Math.floor(width / 160)}
             keyExtractor={({ _id, index }) => _id}
             renderItem={({ item }) => (
-              <TouchableHighlight
-                onPress={() =>
-                  navigation.navigate('ProductDetail', { id: item._id })
-                }>
-                <ProductItem
-                  product={item}
-                  addCartItem={() => dispatch(addCartItem(item))}
-                />
-              </TouchableHighlight>
+              <ProductItem
+                product={item}
+                addCartItem={() => dispatch(addCartItem(item))}
+              />
             )}
           />
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

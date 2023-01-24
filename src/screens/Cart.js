@@ -1,50 +1,60 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CartItem from '../components/CartItem';
-import {
-  getLocalData,
-  saveLocalData,
-  getCartItemsCount,
-  getCartPriceSum,
-} from '../utils';
-import { addCartItem, getAllCartItems, removeCartItem } from '../actions/cart';
+import { removeCartItem } from '../actions/cart';
+import { getAllItems } from '../reducers/cart';
+import { getCartItemsCount, getCartPriceSum } from '../utils';
+import axios from '../actions/axois';
 
-const Cart = () => {
+const Cart = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
-  const [items, setItems] = useState([]);
+  const items = useSelector(getAllItems);
+  const count = getCartItemsCount(items);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      tabBarBadge: count,
+    });
+  }, [navigation, count]);
 
-  const getItems = async () => {
-    const data = await getLocalData();
-    setItems(data);
+  const goPay = () => {
+    items.forEach(async item => {
+      await axios.put(`products/${item._id}`, {
+        ...item,
+        inventory: item.inventory - item.quantity,
+      });
+    });
+    Alert.alert('消息', '功能有待添加', [
+      {
+        text: '确认',
+        onPress: () => {
+          items.forEach(async item => {
+            dispatch(removeCartItem(item._id));
+          });
+        },
+      },
+    ]);
   };
-  useEffect(() => {
-    getItems();
-  }, [dispatch]);
-  useFocusEffect(
-    useCallback(() => {
-      getItems();
-    }, []),
-  );
-  const handleRemove = async id => {
-    await dispatch(removeCartItem(id));
-    getItems();
-  };
-
-  // const product = useSelector(state => state.product);
   return (
     <View
-      style={{
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom,
-      }}>
+      style={[
+        {
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+        },
+        { ...styles.container },
+      ]}>
       {items.length === 0 ? (
-        <View style={styles.container}>
-          <Text style={styles.title}>购物车是空的</Text>
-        </View>
+        <Text style={styles.title}>购物车是空的</Text>
       ) : (
         <>
           <View style={styles.header}>
@@ -55,10 +65,14 @@ const Cart = () => {
               <CartItem
                 product={item}
                 key={item._id}
-                removeCartItem={() => handleRemove(item._id)}
+                removeCartItem={() => dispatch(removeCartItem(item._id))}
               />
             ))}
           </ScrollView>
+          <View style={styles.footer}>
+            <Text style={styles.sum}>总价：¥{getCartPriceSum(items)}</Text>
+            <Button color="#df3033" title="去结算" onPress={goPay} />
+          </View>
         </>
       )}
     </View>
@@ -69,24 +83,32 @@ export default Cart;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'column',
   },
   header: {
     backgroundColor: '#fff',
   },
   title: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    paddingTop: 8,
-    paddingBottom: 8,
-    fontSize: 18,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontFamily: 'sans-serif-medium',
+    fontSize: 20,
+    color: '#1c1c1e',
   },
   cart: {
-    display: 'flex',
-    flexDirection: 'column',
+    flex: 1,
     padding: 16,
-    marginBottom: 40,
+  },
+  footer: {
+    height: 48,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+  },
+  sum: {
+    color: '#df3033',
   },
 });
