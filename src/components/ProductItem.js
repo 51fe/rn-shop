@@ -4,12 +4,11 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/core';
 import { getAddedQuantity } from '../utils';
-import { getAllItems } from '../reducers/cart';
 import BaseImage from './BaseImage';
 
 const ProductItem = ({ product, addCartItem }) => {
   const navigation = useNavigation();
-  const items = useSelector(getAllItems);
+  const items = useSelector(state => state.cart.items);
   return (
     <View style={styles.container}>
       <TouchableOpacity

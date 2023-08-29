@@ -28,14 +28,14 @@ export const getCartPriceSum = items =>
  * @param id
  * @returns {Number}
  */
-export const getAddedQuantity = async (items, id) => {
+export const getAddedQuantity = (items, id) => {
   try {
     const found = items.find(item => item._id === id);
     if (found) {
       return Number(found.quantity);
     }
+    return 0;
   } catch (error) {
-    // console.log(error);
+    return 0;
   }
-  return 0;
 };

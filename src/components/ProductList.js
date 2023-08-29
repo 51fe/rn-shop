@@ -31,7 +31,7 @@ const ProductList = () => {
           <FlatList
             data={products}
             numColumns={Math.floor(width / 160)}
-            keyExtractor={({ _id, index }) => _id}
+            keyExtractor={({ _id }) => _id}
             renderItem={({ item }) => (
               <ProductItem
                 product={item}

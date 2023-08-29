@@ -3,4 +3,4 @@
   target = Google Inc.:Google APIs:23
 
 [maven_repositories]
-  central = https://maven.aliyun.com/repository/public
+  central = https://repo1.maven.org/maven2

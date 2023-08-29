@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Keyboard,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { updateCartItem, willUpdateItem } from '../actions/cart';
 
@@ -34,8 +40,8 @@ const CartControl = ({ product, needConfirmed, added }) => {
     if (/^[1-9]\d*$/.test(value) && val <= product.inventory) {
       setCount(val);
       watchCount(val);
-    } else {
-      setCount(initValue);
+    } else if (!val) {
+      setCount('');
     }
   };
 
@@ -53,13 +59,14 @@ const CartControl = ({ product, needConfirmed, added }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onPress={Keyboard.dismiss}>
       <TouchableOpacity onPress={decrement}>
         <MaterialCommunityIcons name="minus-circle" size={24} />
       </TouchableOpacity>
       <TextInput
         value={String(count)}
         style={styles.input}
+        keyboardType="numeric"
         onChangeText={handleChange}
       />
       <TouchableOpacity onPress={increment}>

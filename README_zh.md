@@ -9,10 +9,6 @@
 
 [React Native 电商项目实战](https://www.riafan.com/react-native-shop.html)
 
-- 扫码体验:
-
-![扫码体验](https://www.riafan.com/github/rn-shop/qr-code.png)
-
 ## 运行
 
 ``` bash

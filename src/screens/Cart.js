@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   View,
@@ -11,20 +11,13 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CartItem from '../components/CartItem';
 import { removeCartItem } from '../actions/cart';
-import { getAllItems } from '../reducers/cart';
-import { getCartItemsCount, getCartPriceSum } from '../utils';
+import { getCartPriceSum } from '../utils';
 import axios from '../actions/axois';
 
-const Cart = ({ navigation }) => {
+const Cart = () => {
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
-  const items = useSelector(getAllItems);
-  const count = getCartItemsCount(items);
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      tabBarBadge: count,
-    });
-  }, [navigation, count]);
+  const items = useSelector(state => state.cart.items);
 
   const goPay = () => {
     items.forEach(async item => {
@@ -57,9 +50,6 @@ const Cart = ({ navigation }) => {
         <Text style={styles.title}>购物车是空的</Text>
       ) : (
         <>
-          <View style={styles.header}>
-            <Text style={styles.title}>您的购物车</Text>
-          </View>
           <ScrollView style={styles.cart}>
             {items.map(item => (
               <CartItem

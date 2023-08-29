@@ -91,5 +91,3 @@ const cart = (state = initialState, action) => {
 };
 
 export default cart;
-
-export const getAllItems = state => state.cart.items;

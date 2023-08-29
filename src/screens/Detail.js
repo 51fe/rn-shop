@@ -7,14 +7,13 @@ import { addCartItems, willUpdateItem } from '../actions/cart';
 import CartControl from '../components/CartControl';
 import BaseImage from '../components/BaseImage';
 import Loader from '../components/Loader';
-import { getAllItems } from '../reducers/cart';
 
 const Detail = ({ route, navigation }) => {
   const { id } = route.params;
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
   const product = useSelector(state => state.product);
-  const items = useSelector(getAllItems);
+  const items = useSelector(state => state.cart.items);
   let added = 0;
   const found = items.find(item => item._id === product._id);
   if (found) {

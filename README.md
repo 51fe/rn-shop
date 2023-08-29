@@ -10,10 +10,6 @@
 
 [React Native shopping cart](https://www.riafan.com/react-native-shop.html)
 
-## Qr code:
-
-![qr-code.png](https://www.riafan.com/uploads/2105/qr-code.png)
-
 ## Build Setup
 
 ``` bash

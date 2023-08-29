@@ -1,23 +1,48 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import ProductList from '../components/ProductList';
-import Detail from './Detail';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Stack = createStackNavigator();
+import { getCartItemsCount } from '../utils';
+import ProductList from '../components/ProductList';
+import Cart from './Cart';
+
+const Tab = createBottomTabNavigator();
+
 const Home = () => {
+  const items = useSelector(state => state.cart.items);
+  const count = useMemo(() => getCartItemsCount(items), [items]);
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="ProductList"
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarLabelPosition: 'beside-icon',
+        tabBarIcon: ({ color, size }) => (
+          <MaterialIcons
+            name={route.name.toLocaleLowerCase()}
+            size={size}
+            color={color}
+          />
+        ),
+      })}>
+      <Tab.Screen
+        name="Home"
         component={ProductList}
-        options={{ title: '热卖中...' }}
+        options={{
+          title: '首页',
+          headerShown: false,
+        }}
       />
-      <Stack.Screen
-        name="ProductDetail"
-        component={Detail}
-        options={{ title: '查看详情' }}
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{
+          title: '购物车',
+          headerShown: false,
+          tabBarBadge: count,
+        }}
       />
-    </Stack.Navigator>
+    </Tab.Navigator>
   );
 };
 

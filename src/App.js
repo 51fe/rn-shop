@@ -1,52 +1,45 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  getFocusedRouteNameFromRoute,
+} from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { store, persisted } from './store';
-import Cart from './screens/Cart';
-import Home from './screens/Home';
 
-const Tab = createBottomTabNavigator();
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import Home from './screens/Home';
+import Detail from './screens/Detail';
+
+import { store, persisted } from './store';
+
+const Stack = createNativeStackNavigator();
 const App = () => {
+  function getHeaderTitle(route) {
+    const routeName = getFocusedRouteNameFromRoute(route);
+    if (routeName === 'Cart') {
+      return '您的购物车';
+    }
+    return '热卖中...';
+  }
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persisted}>
         <NavigationContainer>
-          <Tab.Navigator
-            tabBarOptions={{
-              labelPosition: 'beside-icon',
-            }}>
-            <Tab.Screen
-              name="Home"
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Profile"
               component={Home}
-              options={{
-                title: '首页',
-                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons
-                    name="home"
-                    size={size}
-                    color={color}
-                  />
-                ),
-              }}
+              options={({ route }) => ({
+                headerTitle: getHeaderTitle(route),
+              })}
             />
-            <Tab.Screen
-              name="Cart"
-              component={Cart}
-              options={{
-                title: '购物车',
-                tabBarIcon: ({ color, size }) => (
-                  <MaterialCommunityIcons
-                    name="cart"
-                    size={size}
-                    color={color}
-                  />
-                ),
-              }}
+            <Stack.Screen
+              name="ProductDetail"
+              component={Detail}
+              options={{ title: '查看详情' }}
             />
-          </Tab.Navigator>
+          </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
     </Provider>
