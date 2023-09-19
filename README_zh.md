@@ -2,12 +2,9 @@
 
 > React Native(Hook) + Redux + React Navigation + Node.js + MongoDB + Express [电商实战项目](http://riafan.com/rn-shop) 。如果您喜欢本项目, 欢迎点赞，谢谢！
 
-- 截图:
-![效果截图](https://www.riafan.com/github/rn-shop/snapshot.jpg)
+## 截图
 
-- 教程
-
-[React Native 电商项目实战](https://www.riafan.com/react-native-shop.html)
+![snapshot.jpg](https://51fe.site/uploads/2105/snapshot.jpg)
 
 ## 运行
 

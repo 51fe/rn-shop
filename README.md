@@ -2,13 +2,9 @@
 
 > A shopping cart project with React Native(Hook) + Redux + React Navigation + Node.js + MongoDB + Express. If you like the project, please star me, thanks!
 
-- Snapshot:
+## Snapshot
 
-![snapshot.jpg](https://www.riafan.com/uploads/2105/snapshot.jpg)
-
-- Tutorial
-
-[React Native shopping cart](https://www.riafan.com/react-native-shop.html)
+![snapshot.jpg](https://51fe.site/uploads/2105/snapshot.jpg)
 
 ## Build Setup
 
